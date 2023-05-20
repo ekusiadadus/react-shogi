@@ -74,10 +74,10 @@ const initialBoard = [
 
 export const num2num = (str: string) => {
   // 全角数字を半角数字に
-  var reg
-  var twoBtNum = ["１", "２", "３", "４", "５", "６", "７", "８", "９", "０"]
-  var num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-  for (var i = 0; i < num.length; i++) {
+  let reg
+  const twoBtNum = ["１", "２", "３", "４", "５", "６", "７", "８", "９", "０"]
+  const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+  for (let i = 0; i < num.length; i++) {
     reg = new RegExp(twoBtNum[i], "g") // ex) reg = /３/g
     str = str.replace(reg, num[i])
   }
@@ -85,10 +85,10 @@ export const num2num = (str: string) => {
 }
 export const kanji2num = (str: string) => {
   // 漢数字を半角数字に
-  var reg
-  var kanjiNum = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "〇"]
-  var num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-  for (var i = 0; i < num.length; i++) {
+  let reg
+  const kanjiNum = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "〇"]
+  const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+  for (let i = 0; i < num.length; i++) {
     reg = new RegExp(kanjiNum[i], "g") // ex) reg = /三/g
     str = str.replace(reg, num[i])
   }
@@ -100,33 +100,36 @@ export const parseKIFLine = (kifLine: string) => {
   kifLine = num2num(kifLine)
   kifLine = kanji2num(kifLine)
 
-  let matches = kifLine.match(/(\d+) (\d{2})(\D+)\((\d{2})\)/)
+  const matches = kifLine.match(/(\d+) (\d{2})(\D+)\((\d{2})\)/)
 
   if (matches === null) {
     throw new Error("Invalid KIF format")
   }
 
+  // eslint-disable-next-line
+  const matchesNotNull = matches!
+
   // 元の位置
-  let fromY = parseInt(matches[4].charAt(1), 10) - 1
-  let fromX = 9 - parseInt(matches[4].charAt(0), 10)
+  const fromY = parseInt(matches[4].charAt(1), 10) - 1
+  const fromX = 9 - parseInt(matches[4].charAt(0), 10)
 
   console.log(fromX, fromY)
 
   // 移動先の位置
-  let toY = parseInt(matches[2].charAt(1), 10) - 1
-  let toX = 9 - parseInt(matches[2].charAt(0), 10)
+  const toY = parseInt(matches[2].charAt(1), 10) - 1
+  const toX = 9 - parseInt(matches[2].charAt(0), 10)
 
   // 駒の種類を取得
-  let pieceType = Object.keys(PieceDisplay).find(
-    key => PieceDisplay[key] === matches[3]
+  const pieceType = Object.keys(PieceDisplay).find(
+    key => PieceDisplay[key as keyof typeof PieceDisplay] === matchesNotNull[3]
   )
 
   if (!pieceType) {
     throw new Error("Invalid piece type")
   }
 
-  let index = parseInt(matches[1], 10) // 手番をインデックスとして使用します
-  let direction: "up" | "down" = index % 2 === 1 ? "up" : "down" // 修正: 1始まりのインデックスを考慮
+  const index = parseInt(matches[1], 10) // 手番をインデックスとして使用します
+  const direction: "up" | "down" = index % 2 === 1 ? "up" : "down" // 修正: 1始まりのインデックスを考慮
 
   return { fromX, fromY, toX, toY, pieceType, direction }
 }
@@ -136,14 +139,14 @@ export const updateBoard = ({
   board,
   kifLine
 }: {
-  board: Array<{ type: PieceType; direction: "up" | "down" } | null>[]
+  board: Array<Array<{ type: PieceType; direction: "up" | "down" } | null>>
   kifLine: string
 }) => {
   // KIF形式から移動情報をパース
-  let move = parseKIFLine(kifLine)
+  const move = parseKIFLine(kifLine)
 
   // 移動前のピースの位置
-  let piece = board[move.fromY][move.fromX]
+  const piece = board[move.fromY][move.fromX]
   console.log(piece)
 
   if (piece === null || piece.type !== move.pieceType) {
@@ -156,7 +159,7 @@ export const updateBoard = ({
   // ピースの移動方向を更新
   piece.direction = move.direction
 
-  let newBoard = board.map(row => [...row])
+  const newBoard = board.map(row => [...row])
 
   // ピースを移動
   newBoard[move.fromY][move.fromX] = null
@@ -166,10 +169,10 @@ export const updateBoard = ({
 }
 
 export const parseKIF = (KIF: string) => {
-  let boardHistory = [initialBoard]
-  let lines = KIF.split(/\r?\n/)
+  const boardHistory = [initialBoard]
+  const lines = KIF.split(/\r?\n/)
 
-  lines.forEach((line, index) => {
+  lines.forEach(line => {
     boardHistory.push(
       updateBoard({
         board: boardHistory[boardHistory.length - 1],

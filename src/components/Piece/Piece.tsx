@@ -31,7 +31,6 @@ export const Piece = ({
         borderRadius: 0,
         boxShadow: "none"
       }}
-      //onclick show position and piece info in alert
       onClick={() => {
         alert(`row: ${position.row}, column: ${position.column}, type: ${type}`)
       }}

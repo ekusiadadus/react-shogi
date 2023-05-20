@@ -22,7 +22,16 @@ export const Game = ({ KIF }: { KIF: string }) => {
   }
 
   return (
-    <div className="game">
+    <div
+      className="game"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "16px"
+      }}
+    >
       <Board board={kifData[stepNumber]} />
       <div className="game-info">
         <button onClick={prevStep}>前へ戻る</button>
