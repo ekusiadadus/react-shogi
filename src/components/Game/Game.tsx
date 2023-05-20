@@ -1,13 +1,25 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Board from "../Board/Board"
 import { parseKIF } from "../../helpers/kifParser"
 
 export const Game = ({ KIF }: { KIF: string }) => {
   const [stepNumber, setStepNumber] = useState(0)
-
   const kifData = parseKIF(KIF)
-  console.log("🚀 ~ file: Game.tsx:10 ~ Game ~ length:", length)
-  console.log("🚀 ~ file: Game.tsx:10 ~ Game ~ kifData:", kifData)
+
+  useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      if (event.deltaY > 0) {
+        // Scrolling down
+        nextStep()
+      } else if (event.deltaY < 0) {
+        // Scrolling up
+        prevStep()
+      }
+    }
+
+    window.addEventListener("wheel", handleWheel)
+    return () => { window.removeEventListener("wheel", handleWheel); }
+  }, [stepNumber, kifData])
 
   function nextStep() {
     if (stepNumber < kifData.length - 1) {
