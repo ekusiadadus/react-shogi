@@ -34,8 +34,8 @@ export const Game = ({ KIF }: { KIF: string }) => {
     >
       <Board board={kifData[stepNumber]} />
       <div className="game-info">
-        <button onClick={prevStep}>前へ戻る</button>
-        <button onClick={nextStep}>次へ進む</button>
+        <button onTouchStart={prevStep}>前へ戻る</button>
+        <button onTouchStart={nextStep}>次へ進む</button>
       </div>
     </div>
   )
