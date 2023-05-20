@@ -14,7 +14,7 @@ export enum PieceType {
   Narigin = "Narigin",
   Narikei = "Narikei",
   Narikyo = "Narikyo",
-  To = "To",
+  To = "To"
 }
 
 // 駒の種類に対応する表示を表すオブジェクト
@@ -33,5 +33,5 @@ export const PieceDisplay = {
   [PieceType.Narigin]: "成銀",
   [PieceType.Narikei]: "成桂",
   [PieceType.Narikyo]: "成香",
-  [PieceType.To]: "と",
-};
+  [PieceType.To]: "と"
+}

@@ -1,19 +1,20 @@
-import React from "react";
-import { PieceType } from "../../model/pieceType";
-import Piece from "../Piece/Piece";
+import type { PieceType } from "../../model/pieceType"
+import Piece from "../Piece/Piece"
 
 export const Square = ({
-  piece,
+  piece
 }: {
   piece: {
-    type: PieceType;
-    direction: "up" | "down";
-  };
+    type: PieceType
+    direction: "up" | "down"
+  }
 }) => {
   return (
     <div className="square">
-      {piece && <Piece type={piece.type} direction={piece.direction} />}
-      {!piece && (
+      {piece !== null && (
+        <Piece type={piece.type} direction={piece.direction} />
+      )}
+      {piece === null && (
         <div
           style={{
             display: "flex",
@@ -23,12 +24,12 @@ export const Square = ({
             height: "30px",
             border: "1px solid black",
             backgroundColor: "beige",
-            color: "black",
+            color: "black"
           }}
         ></div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Square;
+export default Square
