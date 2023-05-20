@@ -1,13 +1,15 @@
-import { PieceType } from "../../model/pieceType";
-import { Square } from "../Square/Square";
+import type { PieceType } from "../../model/pieceType"
+import { Square } from "../Square/Square"
 
 const Board = ({
-  board,
+  board
 }: {
-  board: {
-    type: PieceType;
-    direction: "up" | "down";
-  }[][];
+  board: Array<
+    Array<{
+      type: PieceType
+      direction: "up" | "down"
+    }>
+  >
 }) => {
   return (
     <div
@@ -15,7 +17,7 @@ const Board = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "center"
       }}
     >
       {board.map((row, i) => (
@@ -26,7 +28,7 @@ const Board = ({
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Board;
+export default Board

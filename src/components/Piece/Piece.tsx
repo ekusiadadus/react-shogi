@@ -1,17 +1,13 @@
-import React from "react";
-import { PieceDisplay, PieceType } from "../../model/pieceType";
-
-//type is japanese chess piece
-//direction is up or down
+import { PieceDisplay, type PieceType } from "../../model/pieceType"
 
 export const Piece = ({
   type,
-  direction,
+  direction
 }: {
-  type: PieceType;
-  direction: "up" | "down";
+  type: PieceType
+  direction: "up" | "down"
 }) => {
-  const transform = direction === "up" ? "rotate(0deg)" : "rotate(180deg)";
+  const transform = direction === "up" ? "rotate(0deg)" : "rotate(180deg)"
 
   return (
     <div
@@ -23,13 +19,13 @@ export const Piece = ({
         height: "30px",
         border: "1px solid black",
         backgroundColor: "beige",
-        transform: transform,
-        color: "black",
+        transform,
+        color: "black"
       }}
     >
       {PieceDisplay[type]}
     </div>
-  );
-};
+  )
+}
 
-export default Piece;
+export default Piece
