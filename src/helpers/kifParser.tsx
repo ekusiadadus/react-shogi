@@ -1,5 +1,4 @@
 import { PieceDisplay, PieceType } from "../model/pieceType"
-import { index } from "../pages/BoardPage/index"
 
 const initialBoard = [
   [
