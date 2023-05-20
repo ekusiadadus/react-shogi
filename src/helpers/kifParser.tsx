@@ -113,8 +113,6 @@ export const parseKIFLine = (kifLine: string) => {
   const fromY = parseInt(matches[4].charAt(1), 10) - 1
   const fromX = 9 - parseInt(matches[4].charAt(0), 10)
 
-  console.log(fromX, fromY)
-
   // 移動先の位置
   const toY = parseInt(matches[2].charAt(1), 10) - 1
   const toX = 9 - parseInt(matches[2].charAt(0), 10)
@@ -147,7 +145,6 @@ export const updateBoard = ({
 
   // 移動前のピースの位置
   const piece = board[move.fromY][move.fromX]
-  console.log(piece)
 
   if (piece === null || piece.type !== move.pieceType) {
     throw new Error("Invalid piece movement")
@@ -180,8 +177,6 @@ export const parseKIF = (KIF: string) => {
       })
     )
   })
-
-  console.log(boardHistory)
 
   return boardHistory
 }
