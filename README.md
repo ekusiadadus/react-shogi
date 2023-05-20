@@ -32,3 +32,29 @@ Shogi library for react user
   })
 </script>
 ```
+
+## 開発者向け
+
+### インストール
+
+```bash
+$ pnpm install
+```
+
+### 立ち上げ
+
+```bash
+$ pnpm dev
+```
+
+### ビルド
+
+```bash
+$ pnpm build
+```
+
+### 組み込み
+
+```bash
+$ pnpm build:shogi
+```
