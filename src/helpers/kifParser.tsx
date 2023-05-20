@@ -14,13 +14,13 @@ const initialBoard = [
   ],
   [
     null,
-    { type: PieceType.Kaku, direction: "down" },
-    null,
-    null,
-    null,
-    null,
-    null,
     { type: PieceType.Hisha, direction: "down" },
+    null,
+    null,
+    null,
+    null,
+    null,
+    { type: PieceType.Kaku, direction: "down" },
     null
   ],
   [
