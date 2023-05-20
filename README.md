@@ -2,11 +2,9 @@
 
 Shogi library for react user
 
+デモサイト: <https://ekusiadadus.github.io/react-shogi/>
+
 ![image](https://github.com/ekusiadadus/react-shogi/assets/70436490/60245b18-264f-4c8f-adc9-97bae1dc4ab2)
-
-## How to use
-
-[Demo Page](https://ekusiadadus.github.io/react-shogi/)
 
 ## 将棋盤を静的なサイトに埋め込む
 
