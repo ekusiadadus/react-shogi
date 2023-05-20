@@ -2,17 +2,26 @@ import type { PieceType } from "../../model/pieceType"
 import Piece from "../Piece/Piece"
 
 export const Square = ({
-  piece
+  piece,
+  position
 }: {
   piece: {
     type: PieceType
     direction: "up" | "down"
   }
+  position: {
+    row: number
+    column: number
+  }
 }) => {
   return (
     <div className="square">
       {piece !== null && (
-        <Piece type={piece.type} direction={piece.direction} />
+        <Piece
+          type={piece.type}
+          direction={piece.direction}
+          position={position}
+        />
       )}
       {piece === null && (
         <div

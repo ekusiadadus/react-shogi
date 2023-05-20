@@ -1,85 +1,13 @@
 import { useState } from "react"
 import Board from "../Board/Board"
-import { PieceType } from "../../model/pieceType"
+import { parseKIF } from "../../helpers/kifParser"
 
-// KIF形式の棋譜データ。このサンプルでは単純化のために配列で表現しています。
-
-const initialBoard = [
-  [
-    { type: PieceType.Kyo, direction: "down" },
-    { type: PieceType.Kei, direction: "down" },
-    { type: PieceType.Gin, direction: "down" },
-    { type: PieceType.Kin, direction: "down" },
-    { type: PieceType.Ou, direction: "down" },
-    { type: PieceType.Kin, direction: "down" },
-    { type: PieceType.Gin, direction: "down" },
-    { type: PieceType.Kei, direction: "down" },
-    { type: PieceType.Kyo, direction: "down" }
-  ],
-  [
-    null,
-    { type: PieceType.Hisha, direction: "down" },
-    null,
-    null,
-    null,
-    null,
-    null,
-    { type: PieceType.Kaku, direction: "down" },
-    null
-  ],
-  [
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" },
-    { type: PieceType.Fu, direction: "down" }
-  ],
-  Array(9).fill(null),
-  Array(9).fill(null),
-  Array(9).fill(null),
-  [
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" },
-    { type: PieceType.Fu, direction: "up" }
-  ],
-  [
-    null,
-    { type: PieceType.Hisha, direction: "up" },
-    null,
-    null,
-    null,
-    null,
-    null,
-    { type: PieceType.Kaku, direction: "up" },
-    null
-  ],
-  [
-    { type: PieceType.Kyo, direction: "up" },
-    { type: PieceType.Kei, direction: "up" },
-    { type: PieceType.Gin, direction: "up" },
-    { type: PieceType.Kin, direction: "up" },
-    { type: PieceType.Gyoku, direction: "up" },
-    { type: PieceType.Kin, direction: "up" },
-    { type: PieceType.Gin, direction: "up" },
-    { type: PieceType.Kei, direction: "up" },
-    { type: PieceType.Kyo, direction: "up" }
-  ]
-]
-
-export const kifData = [initialBoard]
-
-export const Game = () => {
+export const Game = ({ KIF }: { KIF: string }) => {
   const [stepNumber, setStepNumber] = useState(0)
+
+  const kifData = parseKIF(KIF)
+  console.log("🚀 ~ file: Game.tsx:10 ~ Game ~ length:", length)
+  console.log("🚀 ~ file: Game.tsx:10 ~ Game ~ kifData:", kifData)
 
   function nextStep() {
     if (stepNumber < kifData.length - 1) {
