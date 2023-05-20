@@ -5,7 +5,7 @@ export const Piece = ({
   direction,
   position
 }: {
-  type: PieceType
+  type: PieceType | null
   direction: "up" | "down"
   position: {
     row: number
@@ -13,6 +13,7 @@ export const Piece = ({
   }
 }) => {
   const transform = direction === "up" ? "rotate(0deg)" : "rotate(180deg)"
+  const displayType = type === null ? "" : PieceDisplay[type]
 
   return (
     <button
@@ -32,10 +33,12 @@ export const Piece = ({
         boxShadow: "none"
       }}
       onClick={() => {
-        alert(`row: ${position.row}, column: ${position.column}, type: ${type}`)
+        alert(
+          `row: ${position.row}, column: ${position.column}, type: ${displayType}`
+        )
       }}
     >
-      {PieceDisplay[type]}
+      {type === null ? "" : PieceDisplay[type]}
     </button>
   )
 }

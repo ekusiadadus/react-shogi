@@ -16,26 +16,15 @@ export const Square = ({
 }) => {
   return (
     <div className="square">
+      {piece === null && (
+        <Piece type={null} direction="up" position={position} />
+      )}
       {piece !== null && (
         <Piece
           type={piece.type}
           direction={piece.direction}
           position={position}
         />
-      )}
-      {piece === null && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "30px",
-            height: "30px",
-            border: "1px solid black",
-            backgroundColor: "beige",
-            color: "black"
-          }}
-        ></div>
       )}
     </div>
   )
