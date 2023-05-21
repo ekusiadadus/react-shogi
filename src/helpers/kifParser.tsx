@@ -1,5 +1,5 @@
 import { type BoardType } from "../model/boardType"
-import { PieceDisplay, type PieceState, PieceType } from "../model/pieceType"
+import { PieceDisplay, PieceType } from "../model/pieceType"
 
 const initialBoard: BoardType = {
   board: [
@@ -134,91 +134,69 @@ export const kanji2num = (str: string) => {
   }
   return str
 }
-
-// KIF形式から盤面の座標を得るための関数
-export const parseKIFLine = (kifLine: string) => {
-  kifLine = num2num(kifLine)
-  kifLine = kanji2num(kifLine)
-
-  const matches = kifLine.match(/(\d+) (\d{2})(\D+)\((\d{2})\)/)
-
-  if (matches === null) {
-    throw new Error("Invalid KIF format")
+export const zenkaku2hankaku = (str: string) => {
+  // 全角を半角に
+  const zenkaku = ["　"]
+  const hankaku = [" "]
+  for (let i = 0; i < zenkaku.length; i++) {
+    const reg = new RegExp(zenkaku[i], "g")
+    str = str.replace(reg, hankaku[i])
   }
-
-  // eslint-disable-next-line
-  const matchesNotNull = matches!
-
-  // 元の位置
-  const fromY = parseInt(matches[4].charAt(1), 10) - 1
-  const fromX = 9 - parseInt(matches[4].charAt(0), 10)
-
-  // 移動先の位置
-  const toY = parseInt(matches[2].charAt(1), 10) - 1
-  const toX = 9 - parseInt(matches[2].charAt(0), 10)
-
-  // 駒の種類を取得
-  const pieceType = Object.keys(PieceDisplay).find(
-    key => PieceDisplay[key as keyof typeof PieceDisplay] === matchesNotNull[3]
-  )
-
-  if (!pieceType) {
-    throw new Error("Invalid piece type")
-  }
-
-  const index = parseInt(matches[1], 10) // 手番をインデックスとして使用します
-  const direction: "up" | "down" = index % 2 === 1 ? "up" : "down" // 修正: 1始まりのインデックスを考慮
-
-  return { fromX, fromY, toX, toY, pieceType, direction }
+  return str
 }
 
 // KIF形式から盤面の座標を得るための関数
 // ボードと駒台を更新する関数
+// ボードと駒台を更新する関数
 export const updateBoardAndKomadai = ({
   board,
-  kifLine
+  move
 }: {
   board: BoardType
-  kifLine: string
+  move: {
+    fromX: number | null
+    fromY: number | null
+    toX: number
+    toY: number
+    pieceType: PieceType
+    upKomadai: Record<PieceType, number>
+    downKomadai: Record<PieceType, number>
+    direction: "up" | "down"
+  }
 }): BoardType => {
-  // KIF形式から移動情報をパース
-  const move = parseKIFLine(kifLine)
+  const newBoard = board.board.map(row => row.map(piece => piece))
 
-  // 移動前のピースの位置
-  const piece: PieceState | null = board.board[move.fromY][move.fromX]
-  const newBoard: Array<Array<PieceState | null>> = board.board.map(row => [
-    ...row
-  ])
-  const newUpKomadai: Record<PieceType, number> = { ...board.upKomadai }
-  const newDownKomadai: Record<PieceType, number> = { ...board.downKomadai }
+  // Check if there's a piece in the destination
+  const capturedPiece = newBoard[move.toY][move.toX]
 
-  if (piece === null || piece.type !== move.pieceType) {
-    // If piece is not on the board, it must be on the komadai.
-    const komadaiKey: "upKomadai" | "downKomadai" =
-      move.direction === "up" ? "downKomadai" : "upKomadai"
-
-    if (board[komadaiKey][move.pieceType as PieceType] === 0) {
-      throw new Error("Invalid piece movement")
-    }
-
-    // Remove the piece from komadai.
-    board[komadaiKey][move.pieceType as PieceType]--
-  } else {
-    // ピースの移動方向を更新
-    piece.direction = move.direction
-
-    // ピースを移動
-    newBoard[move.fromY][move.fromX] = null
-
-    // If there is a piece on the destination square, it is captured.
-    const capturedPiece = board.board[move.toY][move.toX]
-    if (capturedPiece !== null) {
-      const komadaiKey = move.direction === "up" ? "upKomadai" : "downKomadai"
-      board[komadaiKey][capturedPiece.type]++
-    }
+  // Place the new piece
+  newBoard[move.toY][move.toX] = {
+    type: move.pieceType,
+    direction: move.direction
   }
 
-  newBoard[move.toY][move.toX] = piece
+  // Remove the old piece from the original location if it exists
+  if (move.fromX !== null && move.fromY !== null) {
+    newBoard[move.fromY][move.fromX] = null
+  }
+
+  const newUpKomadai = { ...board.upKomadai }
+  const newDownKomadai = { ...board.downKomadai }
+  // If the move was a piece drop
+  if (move.fromX === null && move.fromY === null) {
+    if (move.direction === "up") {
+      newUpKomadai[move.pieceType] -= 1
+    } else {
+      newDownKomadai[move.pieceType] -= 1
+    }
+  } else if (capturedPiece !== null) {
+    // If the move captured a piece
+    if (move.direction === "up") {
+      newDownKomadai[capturedPiece.type] += 1 // Captured pieces get added to the opponent's Komadai
+    } else {
+      newUpKomadai[capturedPiece.type] += 1
+    }
+  }
 
   return {
     board: newBoard,
@@ -233,15 +211,70 @@ export const updateBoardAndKomadai = ({
 export const parseKIF = (KIF: string) => {
   const boardHistory: BoardType[] = [initialBoard]
   const lines = KIF.split(/\r?\n/)
+  let prevMove: { toX: number; toY: number } | null = null
 
-  lines.forEach(line => {
+  lines.forEach((line, index) => {
+    line = num2num(line)
+    line = kanji2num(line)
+    line = zenkaku2hankaku(line)
+    const matches = line.match(/(\d+) (同|(\d{2}))(\D+)(打)?\((\d{2})?\)/)
+
+    if (matches === null) {
+      throw new Error("Invalid KIF format")
+    }
+
+    const idx = parseInt(matches[1], 10)
+    const direction: "up" | "down" = idx % 2 === 1 ? "up" : "down"
+    const pieceType = Object.keys(PieceDisplay).find(
+      key => PieceDisplay[key as keyof typeof PieceDisplay] === matches[4]
+    ) as PieceType
+
+    let toX: number, toY: number
+    if (matches[2] === "同") {
+      if (!prevMove) {
+        throw new Error("Invalid KIF format")
+      }
+      toX = prevMove.toX
+      toY = prevMove.toY
+    } else {
+      toY = parseInt(matches[2].charAt(1), 10) - 1
+      toX = 9 - parseInt(matches[2].charAt(0), 10)
+    }
+
+    let fromX: number | null, fromY: number | null
+    if (matches[5] === "打") {
+      fromX = null
+      fromY = null
+    } else {
+      if (!matches[6]) {
+        throw new Error("Invalid KIF format")
+      }
+      fromY = parseInt(matches[6].charAt(1), 10) - 1
+      fromX = 9 - parseInt(matches[6].charAt(0), 10)
+    }
+
+    const move = {
+      direction,
+      pieceType,
+      fromX,
+      fromY,
+      toX,
+      toY,
+      upKomadai: { ...boardHistory[boardHistory.length - 1].upKomadai },
+      downKomadai: { ...boardHistory[boardHistory.length - 1].downKomadai }
+    }
+
     boardHistory.push(
       updateBoardAndKomadai({
         board: boardHistory[boardHistory.length - 1],
-        kifLine: line
+        move
       })
     )
+
+    prevMove = { toX, toY }
   })
+
+  console.log(boardHistory)
 
   return boardHistory
 }

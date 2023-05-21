@@ -9,7 +9,10 @@ export const Komadai = ({ pieces }: { pieces: Record<PieceType, number> }) => {
     (list, [type, count]) => {
       return [
         ...list,
-        ...new Array(count).fill({ type, direction: "up" as const })
+        ...new Array(Math.max(0, count)).fill({
+          type,
+          direction: "up" as const
+        })
       ]
     },
     []
