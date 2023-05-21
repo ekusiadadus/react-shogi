@@ -27,3 +27,4 @@ dist-ssr
 **.swp
 
 .env*
+types

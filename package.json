@@ -1,12 +1,27 @@
 {
   "name": "react-shogi",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
   "author": {
     "name": "ekusiadadus",
     "email": "ekusiadadus@gmail.com"
+  },
+  "main": "./dist/ShogiGame.umd.js",
+  "module": "./dist/ShogiGame.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ekusiadadus/react-shogi"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/ShogiGame.js",
+      "require": "./dist/ShogiGame.umd.js"
+    }
   },
   "scripts": {
     "dev": "vite",
@@ -17,7 +32,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "lint:css": "stylelint \"src/**/*.css\" --fix",
     "prepare": "husky install",
-    "build:shogi": "tsc && vite --config vite.EmbeddedShogi.config.ts build"
+    "build:shogi": "tsc && vite --config vite.EmbeddedShogi.config.ts build",
+    "build:lib": " vite --config vite.Library.config.ts build && tsc --project tsconfig.library.json"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix",

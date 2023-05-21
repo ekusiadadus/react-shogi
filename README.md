@@ -56,3 +56,9 @@ $ pnpm build
 ```bash
 $ pnpm build:shogi
 ```
+
+### ライブラリ
+
+```bash
+$ pnpm build:lib
+```
