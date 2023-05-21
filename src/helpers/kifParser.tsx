@@ -236,6 +236,7 @@ export const parseKIF = (KIF: string) => {
       }
       toX = prevMove.toX
       toY = prevMove.toY
+      console.log(prevMove)
     } else {
       toY = parseInt(matches[2].charAt(1), 10) - 1
       toX = 9 - parseInt(matches[2].charAt(0), 10)
@@ -251,6 +252,11 @@ export const parseKIF = (KIF: string) => {
       }
       fromY = parseInt(matches[6].charAt(1), 10) - 1
       fromX = 9 - parseInt(matches[6].charAt(0), 10)
+      console.log(
+        "🚀 ~ file: kifParser.tsx:256 ~ lines.forEach ~ log:",
+        fromX,
+        fromY
+      )
     }
 
     const move = {
