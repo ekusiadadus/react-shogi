@@ -144,6 +144,31 @@ export const zenkaku2hankaku = (str: string) => {
   }
   return str
 }
+export const multipleKuhaku2single = (str: string) => {
+  // 連続する空白を一つに
+  const reg = / +/g
+  str = str.replace(reg, " ")
+  return str
+}
+
+export const promotePiece = (pieceType: PieceType): PieceType => {
+  switch (pieceType) {
+    case PieceType.Fu:
+      return PieceType.To
+    case PieceType.Kyo:
+      return PieceType.Narikyo
+    case PieceType.Kei:
+      return PieceType.Narikei
+    case PieceType.Gin:
+      return PieceType.Narigin
+    case PieceType.Hisha:
+      return PieceType.Ryu
+    case PieceType.Kaku:
+      return PieceType.Uma
+    default:
+      return pieceType
+  }
+}
 
 // KIF形式から盤面の座標を得るための関数
 // ボードと駒台を更新する関数
@@ -162,6 +187,7 @@ export const updateBoardAndKomadai = ({
     upKomadai: Record<PieceType, number>
     downKomadai: Record<PieceType, number>
     direction: "up" | "down"
+    promote: boolean
   }
 }): BoardType => {
   const newBoard = board.board.map(row => row.map(piece => piece))
@@ -178,6 +204,10 @@ export const updateBoardAndKomadai = ({
   // Remove the old piece from the original location if it exists
   if (move.fromX !== null && move.fromY !== null) {
     newBoard[move.fromY][move.fromX] = null
+  }
+
+  if (move.promote) {
+    move.pieceType = promotePiece(move.pieceType)
   }
 
   const newUpKomadai = { ...board.upKomadai }
@@ -217,7 +247,12 @@ export const parseKIF = (KIF: string) => {
     line = num2num(line)
     line = kanji2num(line)
     line = zenkaku2hankaku(line)
-    const matches = line.match(/(\d+) (同|(\d{2}))(\D+)(打)?\((\d{2})?\)/)
+    line = multipleKuhaku2single(line)
+    // const matches = line.match(/(\d+) (同|(\d{2}))(\D+)(打)?\((\d{2})?\)/)
+    const matches = line.match(/(\d+) (同|(\d{2}))\s*(\D+)(打)?\((\d{2})?\)/)
+    // const matches = line.match(
+    //   /(\d+) (同|(\d{2}))\s*(\D+)(成)?(打)?\((\d{2})?\)/
+    // )
 
     if (matches === null) {
       throw new Error("Invalid KIF format")
@@ -240,6 +275,11 @@ export const parseKIF = (KIF: string) => {
     } else {
       toY = parseInt(matches[2].charAt(1), 10) - 1
       toX = 9 - parseInt(matches[2].charAt(0), 10)
+    }
+
+    let promote: boolean = false
+    if (matches[5] === "成") {
+      promote = true
     }
 
     let fromX: number | null, fromY: number | null
@@ -267,7 +307,8 @@ export const parseKIF = (KIF: string) => {
       toX,
       toY,
       upKomadai: { ...boardHistory[boardHistory.length - 1].upKomadai },
-      downKomadai: { ...boardHistory[boardHistory.length - 1].downKomadai }
+      downKomadai: { ...boardHistory[boardHistory.length - 1].downKomadai },
+      promote
     }
 
     boardHistory.push(
