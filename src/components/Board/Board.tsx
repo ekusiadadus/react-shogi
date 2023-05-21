@@ -18,18 +18,18 @@ const Board = ({ board }: { board: BoardType }) => {
       <Komadai pieces={board.upKomadai} turn="up" />
       <div style={{ display: "flex" }}>
         {columnLabels.map((label, j) => (
-          <div key={j} style={{ width: "32px", textAlign: "center" }}>
+          <div key={j} style={{ width: "40px", textAlign: "center" }}>
             {label}
           </div>
         ))}
-        <div style={{ width: "32px" }}></div>
+        <div style={{ width: "40px" }}></div>
       </div>
       {board.board.map((row, i) => (
         <div key={i} style={{ display: "flex" }}>
           {row.map((piece, j) => (
             <Square key={j} position={{ row: i, column: j }} piece={piece} />
           ))}
-          <div style={{ width: "32px", textAlign: "center" }}>
+          <div style={{ width: "40px", textAlign: "center" }}>
             {rowLabels[i]}
           </div>
         </div>

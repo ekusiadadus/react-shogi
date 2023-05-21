@@ -33,7 +33,7 @@ export const Komadai = ({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(3, 32px)",
+        gridTemplateColumns: "repeat(3, 40px)",
         gridGap: "8px",
         justifyContent: "center",
         alignItems: "center"
@@ -46,8 +46,8 @@ export const Komadai = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             border: "1px solid black",
             backgroundColor: "beige",
             transform:
