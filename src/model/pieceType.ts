@@ -40,3 +40,7 @@ export interface PieceState {
   type: PieceType
   direction: "up" | "down"
 }
+
+export interface PieceStateWithCount extends PieceState {
+  count: number
+}
