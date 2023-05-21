@@ -1,7 +1,7 @@
 {
   "name": "react-shogi",
   "private": false,
-  "version": "0.0.6",
+  "version": "0.0.8",
   "type": "module",
   "license": "MIT",
   "author": {
@@ -15,11 +15,12 @@
     "url": "https://github.com/ekusiadadus/react-shogi"
   },
   "files": [
-    "dist"
+    "dist",
+    "dist/types"
   ],
   "exports": {
     ".": {
-      "import": "./dist/ShogiGame.js",
+      "import": "./dist/*",
       "require": "./dist/ShogiGame.umd.js"
     }
   },
