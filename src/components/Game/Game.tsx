@@ -63,7 +63,10 @@ export const Game = ({ KIF }: { KIF: string }) => {
         <form
           onSubmit={e => {
             e.preventDefault()
-            setData(e.currentTarget.elements[0].value)
+            const inputValue = (
+              document.getElementById("kif") as HTMLInputElement
+            ).value
+            setData(inputValue)
             setStepNumber(0)
           }}
         >
