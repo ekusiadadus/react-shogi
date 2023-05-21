@@ -150,6 +150,19 @@ export const multipleKuhaku2single = (str: string) => {
   str = str.replace(reg, " ")
   return str
 }
+export const removeHeadSpace = (str: string) => {
+  // 先頭の空白を削除
+  // 全角+半角スペースを削除
+  const zenkaku = ["　"]
+  const hankaku = [" "]
+  for (let i = 0; i < zenkaku.length; i++) {
+    const reg = new RegExp(zenkaku[i], "g")
+    str = str.replace(reg, hankaku[i])
+  }
+  const reg = /^ +/g
+  str = str.replace(reg, "")
+  return str
+}
 
 export const promotePiece = (pieceType: PieceType): PieceType => {
   switch (pieceType) {
@@ -244,18 +257,28 @@ export const parseKIF = (KIF: string) => {
   let prevMove: { toX: number; toY: number } | null = null
 
   lines.forEach(line => {
+    line = removeHeadSpace(line)
     line = num2num(line)
     line = kanji2num(line)
     line = zenkaku2hankaku(line)
     line = multipleKuhaku2single(line)
 
+    if (!/^\d/.test(line)) {
+      return
+    }
+
     const matches = line.match(
       // eslint-disable-next-line
-      /^((\d+) (同 |同　|同|\d{2})(玉|飛|龍|竜|角|馬|金|銀|成銀|全|桂|成桂|圭|香|成香|杏|歩|と)(打|成)?(\((\d{2})\))?)|(中断|投了|持将棋|千日手|切れ負け|反則勝ち|反則負け|入玉勝ち|不戦勝|不戦敗|詰み|不詰)$/
+      /^((\d+) (同 |同　|同|\d{2})(玉|飛|龍|竜|角|馬|金|銀|成銀|全|桂|成桂|圭|香|成香|杏|歩|と)(打|成)?(\((\d{2})\))?)|(中断|投了|持将棋|千日手|切れ負け|反則勝ち|反則負け|入玉勝ち|不戦勝|不戦敗|詰み|不詰)|^(\*.*$)/
     )
 
     if (matches === null) {
       throw new Error("Invalid KIF format")
+    }
+
+    // 中断|投了|持将棋|千日手|切れ負け|反則勝ち|反則負け|入玉勝ち|不戦勝|不戦敗|詰み|不詰 であれば、ゲーム終了
+    if (matches[8]) {
+      return
     }
 
     const idx = parseInt(matches[1], 10)
