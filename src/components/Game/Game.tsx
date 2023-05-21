@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Board from "../Board/Board"
 import { parseKIF } from "../../helpers/kifParser"
 
 export const Game = ({ KIF }: { KIF: string }) => {
   const [stepNumber, setStepNumber] = useState(0)
-  const kifData = parseKIF(KIF)
+  const kifData = useMemo(() => parseKIF(KIF), [KIF])
 
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
@@ -18,7 +18,9 @@ export const Game = ({ KIF }: { KIF: string }) => {
     }
 
     window.addEventListener("wheel", handleWheel)
-    return () => { window.removeEventListener("wheel", handleWheel); }
+    return () => {
+      window.removeEventListener("wheel", handleWheel)
+    }
   }, [stepNumber, kifData])
 
   function nextStep() {
@@ -48,6 +50,14 @@ export const Game = ({ KIF }: { KIF: string }) => {
       <div className="game-info">
         <button onClick={prevStep}>前へ戻る</button>
         <button onClick={nextStep}>次へ進む</button>
+        {/* 現状のboardを表示するボタン */}
+        <button
+          onClick={() => {
+            console.log(kifData[stepNumber])
+          }}
+        >
+          現状のboardを表示する
+        </button>
       </div>
     </div>
   )

@@ -1,16 +1,8 @@
-import type { PieceType } from "../../model/pieceType"
+import type { BoardType } from "../../model/boardType"
+import { Komadai } from "../Komadai/Komadai"
 import { Square } from "../Square/Square"
 
-const Board = ({
-  board
-}: {
-  board: Array<
-    Array<{
-      type: PieceType
-      direction: "up" | "down"
-    }>
-  >
-}) => {
+const Board = ({ board }: { board: BoardType }) => {
   const rowLabels = ["一", "二", "三", "四", "五", "六", "七", "八", "九"]
   const columnLabels = ["1", "2", "3", "4", "5", "6", "7", "8", "9"].reverse()
 
@@ -23,6 +15,7 @@ const Board = ({
         justifyContent: "center"
       }}
     >
+      <Komadai pieces={board.upKomadai} />
       <div style={{ display: "flex" }}>
         {columnLabels.map((label, j) => (
           <div key={j} style={{ width: "32px", textAlign: "center" }}>
@@ -31,7 +24,7 @@ const Board = ({
         ))}
         <div style={{ width: "32px" }}></div>
       </div>
-      {board.map((row, i) => (
+      {board.board.map((row, i) => (
         <div key={i} style={{ display: "flex" }}>
           {row.map((piece, j) => (
             <Square key={j} position={{ row: i, column: j }} piece={piece} />
@@ -41,6 +34,7 @@ const Board = ({
           </div>
         </div>
       ))}
+      <Komadai pieces={board.downKomadai} />
     </div>
   )
 }
