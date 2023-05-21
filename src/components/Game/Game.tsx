@@ -4,7 +4,8 @@ import { parseKIF } from "../../helpers/kifParser"
 
 export const Game = ({ KIF }: { KIF: string }) => {
   const [stepNumber, setStepNumber] = useState(0)
-  const kifData = useMemo(() => parseKIF(KIF), [KIF])
+  const [data, setData] = useState(KIF)
+  const kifData = useMemo(() => parseKIF(data), [data])
 
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
@@ -58,6 +59,23 @@ export const Game = ({ KIF }: { KIF: string }) => {
         >
           現状のboardを表示する
         </button>
+        {/* KIF形式の入力formとボタン */}
+        <form
+          onSubmit={e => {
+            e.preventDefault()
+            setData(e.currentTarget.elements[0].value)
+            setStepNumber(0)
+          }}
+        >
+          <textarea
+            name="kif"
+            id="kif"
+            cols={30}
+            rows={10}
+            defaultValue={data}
+          ></textarea>
+          <button type="submit">KIFを入力する</button>
+        </form>
       </div>
     </div>
   )
