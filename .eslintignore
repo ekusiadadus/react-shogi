@@ -5,3 +5,4 @@ public
 vite-env.d.ts
 vite.config.ts
 vite.EmbeddedShogi.config.ts
+vite.*.config.ts
