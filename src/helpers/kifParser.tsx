@@ -274,7 +274,5 @@ export const parseKIF = (KIF: string) => {
     prevMove = { toX, toY }
   })
 
-  console.log(boardHistory)
-
   return boardHistory
 }
