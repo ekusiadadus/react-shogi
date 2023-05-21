@@ -8,7 +8,7 @@ export const Square = ({
   piece: {
     type: PieceType
     direction: "up" | "down"
-  }
+  } | null
   position: {
     row: number
     column: number

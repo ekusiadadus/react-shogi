@@ -1,23 +1,36 @@
-import type { PieceState } from "../../model/pieceType"
+import type { PieceType, PieceState } from "../../model/pieceType"
 import { PieceDisplay } from "../../model/pieceType"
 
-export const Komadai = ({
-  pieces
-}: {
-  pieces: Array<{
-    pieceState: PieceState
-  }>
-}) => {
+export const Komadai = ({ pieces }: { pieces: Record<PieceType, number> }) => {
+  const defaultPieceCount = 9 // Assume that there are 9 spaces in komadai
+
+  // Prepare a list of pieces to display
+  const displayPieces = Object.entries(pieces).reduce<Array<PieceState | null>>(
+    (list, [type, count]) => {
+      return [
+        ...list,
+        ...new Array(count).fill({ type, direction: "up" as const })
+      ]
+    },
+    []
+  )
+
+  // Add null pieces to fill the empty spaces
+  while (displayPieces.length < defaultPieceCount) {
+    displayPieces.push(null)
+  }
+
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "8px"
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 32px)",
+        gridGap: "8px",
+        justifyContent: "center",
+        alignItems: "center"
       }}
     >
-      {pieces.map((piece, index) => (
+      {displayPieces.map((piece, index) => (
         <button
           key={index}
           style={{
@@ -29,7 +42,7 @@ export const Komadai = ({
             border: "1px solid black",
             backgroundColor: "beige",
             transform:
-              piece.pieceState.direction === "up"
+              piece && piece.direction === "up"
                 ? "rotate(0deg)"
                 : "rotate(180deg)",
             color: "black",
@@ -39,16 +52,17 @@ export const Komadai = ({
             boxShadow: "none"
           }}
           onClick={() => {
-            alert(
-              `type: ${PieceDisplay[piece.pieceState.type]}, direction: ${
-                piece.pieceState.direction
-              }`
-            )
+            if (piece) {
+              alert(
+                `type: ${PieceDisplay[piece.type]}, direction: ${
+                  piece.direction
+                }`
+              )
+            }
           }}
+          disabled={piece === null}
         >
-          {piece.pieceState.type === null
-            ? ""
-            : PieceDisplay[piece.pieceState.type]}
+          {piece === null ? "" : PieceDisplay[piece.type]}
         </button>
       ))}
     </div>
