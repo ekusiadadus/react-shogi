@@ -36,6 +36,8 @@ export const Game = ({ KIF }: { KIF: string }) => {
     }
   }
 
+  const [reverseBoardStyleString, setReverseBoardStyleString] =
+    useState<string>("")
   return (
     <div
       className="game"
@@ -47,7 +49,13 @@ export const Game = ({ KIF }: { KIF: string }) => {
         gap: "16px"
       }}
     >
-      <Board board={kifData[stepNumber]} />
+      <div
+        style={{
+          transform: reverseBoardStyleString
+        }}
+      >
+        <Board board={kifData[stepNumber]} />
+      </div>
       <div className="game-info">
         <button onClick={prevStep}>前へ戻る</button>
         <button onClick={nextStep}>次へ進む</button>
@@ -58,6 +66,18 @@ export const Game = ({ KIF }: { KIF: string }) => {
           }}
         >
           現状のboardを表示する
+        </button>
+        {/* 反転する */}
+        <button
+          onClick={() => {
+            setReverseBoardStyleString(
+              reverseBoardStyleString === "rotate(180deg)"
+                ? ""
+                : "rotate(180deg)"
+            )
+          }}
+        >
+          反転する
         </button>
         {/* KIF形式の入力formとボタン */}
         <form
