@@ -50,6 +50,14 @@ export const Game = ({ KIF }: { KIF: string }) => {
       <div className="game-info">
         <button onClick={prevStep}>前へ戻る</button>
         <button onClick={nextStep}>次へ進む</button>
+        {/* 現状のboardを表示するボタン */}
+        <button
+          onClick={() => {
+            console.log(kifData[stepNumber])
+          }}
+        >
+          現状のboardを表示する
+        </button>
       </div>
     </div>
   )

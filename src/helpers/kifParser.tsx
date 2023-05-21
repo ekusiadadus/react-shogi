@@ -248,11 +248,11 @@ export const parseKIF = (KIF: string) => {
     line = kanji2num(line)
     line = zenkaku2hankaku(line)
     line = multipleKuhaku2single(line)
-    // const matches = line.match(/(\d+) (同|(\d{2}))(\D+)(打)?\((\d{2})?\)/)
-    const matches = line.match(/(\d+) (同|(\d{2}))\s*(\D+)(打)?\((\d{2})?\)/)
-    // const matches = line.match(
-    //   /(\d+) (同|(\d{2}))\s*(\D+)(成)?(打)?\((\d{2})?\)/
-    // )
+
+    const matches = line.match(
+      // eslint-disable-next-line
+      /^((\d+) (同 |同　|同|\d{2})(玉|飛|龍|竜|角|馬|金|銀|成銀|全|桂|成桂|圭|香|成香|杏|歩|と)(打|成)?(\((\d{2})\))?)|(中断|投了|持将棋|千日手|切れ負け|反則勝ち|反則負け|入玉勝ち|不戦勝|不戦敗|詰み|不詰)$/
+    )
 
     if (matches === null) {
       throw new Error("Invalid KIF format")
@@ -265,16 +265,18 @@ export const parseKIF = (KIF: string) => {
     ) as PieceType
 
     let toX: number, toY: number
-    if (matches[2] === "同") {
+    if (matches[3] === "同" || matches[3] === "同　" || matches[3] === "同 ") {
       if (!prevMove) {
         throw new Error("Invalid KIF format")
       }
       toX = prevMove.toX
       toY = prevMove.toY
-      console.log(prevMove)
+    } else if (matches[5] === "打") {
+      toY = parseInt(matches[3].charAt(1), 10) - 1
+      toX = 9 - parseInt(matches[3].charAt(0), 10)
     } else {
-      toY = parseInt(matches[2].charAt(1), 10) - 1
-      toX = 9 - parseInt(matches[2].charAt(0), 10)
+      toY = parseInt(matches[3].charAt(1), 10) - 1
+      toX = 9 - parseInt(matches[3].charAt(0), 10)
     }
 
     let promote: boolean = false
@@ -283,20 +285,32 @@ export const parseKIF = (KIF: string) => {
     }
 
     let fromX: number | null, fromY: number | null
+
     if (matches[5] === "打") {
       fromX = null
       fromY = null
-    } else {
-      if (!matches[6]) {
+    } else if (matches[5] === "成") {
+      if (!matches[7]) {
         throw new Error("Invalid KIF format")
       }
-      fromY = parseInt(matches[6].charAt(1), 10) - 1
-      fromX = 9 - parseInt(matches[6].charAt(0), 10)
-      console.log(
-        "🚀 ~ file: kifParser.tsx:256 ~ lines.forEach ~ log:",
-        fromX,
-        fromY
-      )
+      fromY = parseInt(matches[7].charAt(1), 10) - 1
+      fromX = 9 - parseInt(matches[7].charAt(0), 10)
+    } else if (
+      matches[3] === "同" ||
+      matches[3] === "同　" ||
+      matches[3] === "同 "
+    ) {
+      if (!prevMove) {
+        throw new Error("Invalid KIF format")
+      }
+      fromY = parseInt(matches[7].charAt(1), 10) - 1
+      fromX = 9 - parseInt(matches[7].charAt(0), 10)
+    } else {
+      if (!matches[3]) {
+        throw new Error("Invalid KIF format")
+      }
+      fromY = parseInt(matches[7].charAt(1), 10) - 1
+      fromX = 9 - parseInt(matches[7].charAt(0), 10)
     }
 
     const move = {
@@ -311,14 +325,14 @@ export const parseKIF = (KIF: string) => {
       promote
     }
 
+    prevMove = { toX, toY }
+
     boardHistory.push(
       updateBoardAndKomadai({
         board: boardHistory[boardHistory.length - 1],
         move
       })
     )
-
-    prevMove = { toX, toY }
   })
 
   return boardHistory
