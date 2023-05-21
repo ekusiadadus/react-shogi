@@ -54,7 +54,7 @@ export const Game = ({ KIF }: { KIF: string }) => {
         {/* 現状のboardを表示するボタン */}
         <button
           onClick={() => {
-            console.log(kifData[stepNumber])
+            alert(JSON.stringify(kifData[stepNumber]))
           }}
         >
           現状のboardを表示する

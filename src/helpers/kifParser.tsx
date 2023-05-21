@@ -262,7 +262,6 @@ export const parseKIF = (KIF: string) => {
     line = kanji2num(line)
     line = zenkaku2hankaku(line)
     line = multipleKuhaku2single(line)
-    console.log(line)
 
     if (!/^\d/.test(line)) {
       return
@@ -276,8 +275,6 @@ export const parseKIF = (KIF: string) => {
     if (matches === null) {
       throw new Error("Invalid KIF format")
     }
-
-    console.log(matches)
 
     // 中断|投了|持将棋|千日手|切れ負け|反則勝ち|反則負け|入玉勝ち|不戦勝|不戦敗|詰み|不詰 であれば、ゲーム終了
     if (matches[8]) {
