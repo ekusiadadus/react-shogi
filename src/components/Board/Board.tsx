@@ -10,30 +10,78 @@ const Board = ({ board }: { board: BoardType }) => {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         alignItems: "center",
         justifyContent: "center"
       }}
     >
       <Komadai pieces={board.upKomadai} turn="up" />
-      <div style={{ display: "flex" }}>
-        {columnLabels.map((label, j) => (
-          <div key={j} style={{ width: "40px", textAlign: "center" }}>
-            {label}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "40px" }}></div>
+          {columnLabels.map((label, j) => (
+            <div
+              key={j}
+              style={{
+                width: "40px",
+                textAlign: "center",
+                height: "40px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              {label}
+            </div>
+          ))}
+          <div style={{ width: "40px" }}></div>
+        </div>
+        {board.board.map((row, i) => (
+          <div key={i} style={{ display: "flex" }}>
+            <div style={{ width: "40px" }}></div>
+            {row.map((piece, j) => (
+              <Square key={j} position={{ row: i, column: j }} piece={piece} />
+            ))}
+
+            <div
+              style={{
+                width: "40px",
+                textAlign: "center",
+                height: "40px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              {rowLabels[i]}
+            </div>
           </div>
         ))}
-        <div style={{ width: "40px" }}></div>
-      </div>
-      {board.board.map((row, i) => (
-        <div key={i} style={{ display: "flex" }}>
-          {row.map((piece, j) => (
-            <Square key={j} position={{ row: i, column: j }} piece={piece} />
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "40px" }}></div>
+          {columnLabels.map((_, j) => (
+            <div
+              key={j}
+              style={{
+                width: "40px",
+                textAlign: "center",
+                height: "40px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            ></div>
           ))}
-          <div style={{ width: "40px", textAlign: "center" }}>
-            {rowLabels[i]}
-          </div>
+          <div style={{ width: "40px" }}></div>
         </div>
-      ))}
+      </div>
       <Komadai pieces={board.downKomadai} turn="down" />
     </div>
   )

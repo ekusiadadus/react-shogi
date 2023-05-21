@@ -50,6 +50,7 @@ export const Game = ({ KIF }: { KIF: string }) => {
       }}
     >
       <div
+        className="board"
         style={{
           transform: reverseBoardStyleString
         }}
