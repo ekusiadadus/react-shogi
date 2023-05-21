@@ -1,7 +1,13 @@
 import type { PieceType, PieceState } from "../../model/pieceType"
 import { PieceDisplay } from "../../model/pieceType"
 
-export const Komadai = ({ pieces }: { pieces: Record<PieceType, number> }) => {
+export const Komadai = ({
+  pieces,
+  turn
+}: {
+  pieces: Record<PieceType, number>
+  turn: "up" | "down"
+}) => {
   const defaultPieceCount = 9 // Assume that there are 9 spaces in komadai
 
   // Prepare a list of pieces to display
@@ -45,9 +51,7 @@ export const Komadai = ({ pieces }: { pieces: Record<PieceType, number> }) => {
             border: "1px solid black",
             backgroundColor: "beige",
             transform:
-              piece && piece.direction === "up"
-                ? "rotate(0deg)"
-                : "rotate(180deg)",
+              turn === "up" ? "rotate(180deg) scaleX(-1)" : "rotate(0deg)",
             color: "black",
             padding: 0,
             outline: "none",

@@ -183,6 +183,25 @@ export const promotePiece = (pieceType: PieceType): PieceType => {
   }
 }
 
+export const unpromotePiece = (pieceType: PieceType): PieceType => {
+  switch (pieceType) {
+    case PieceType.To:
+      return PieceType.Fu
+    case PieceType.Narikyo:
+      return PieceType.Kyo
+    case PieceType.Narikei:
+      return PieceType.Kei
+    case PieceType.Narigin:
+      return PieceType.Gin
+    case PieceType.Ryu:
+      return PieceType.Hisha
+    case PieceType.Uma:
+      return PieceType.Kaku
+    default:
+      return pieceType
+  }
+}
+
 // KIF形式から盤面の座標を得るための関数
 // ボードと駒台を更新する関数
 // ボードと駒台を更新する関数
@@ -207,6 +226,18 @@ export const updateBoardAndKomadai = ({
 
   // Check if there's a piece in the destination
   const capturedPiece = newBoard[move.toY][move.toX]
+
+  // if capturedPiece is narigin, narikei, narikyo, uma, or ryu, it should be promoted
+  if (
+    capturedPiece &&
+    (capturedPiece.type === PieceType.Narigin ||
+      capturedPiece.type === PieceType.Narikei ||
+      capturedPiece.type === PieceType.Narikyo ||
+      capturedPiece.type === PieceType.Uma ||
+      capturedPiece.type === PieceType.Ryu)
+  ) {
+    capturedPiece.type = unpromotePiece(capturedPiece.type)
+  }
 
   // Place the new piece
   newBoard[move.toY][move.toX] = {

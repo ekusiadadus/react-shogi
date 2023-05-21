@@ -15,7 +15,7 @@ const Board = ({ board }: { board: BoardType }) => {
         justifyContent: "center"
       }}
     >
-      <Komadai pieces={board.upKomadai} />
+      <Komadai pieces={board.upKomadai} turn="up" />
       <div style={{ display: "flex" }}>
         {columnLabels.map((label, j) => (
           <div key={j} style={{ width: "32px", textAlign: "center" }}>
@@ -34,7 +34,7 @@ const Board = ({ board }: { board: BoardType }) => {
           </div>
         </div>
       ))}
-      <Komadai pieces={board.downKomadai} />
+      <Komadai pieces={board.downKomadai} turn="down" />
     </div>
   )
 }
