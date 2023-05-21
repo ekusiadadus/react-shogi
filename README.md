@@ -4,7 +4,8 @@ Shogi library for react user
 
 デモサイト: <https://ekusiadadus.github.io/react-shogi/>
 
-![image](https://github.com/ekusiadadus/react-shogi/assets/70436490/60245b18-264f-4c8f-adc9-97bae1dc4ab2)
+![react-shogi1](https://github.com/ekusiadadus/react-shogi/assets/70436490/9c028d4c-ccef-47e0-9659-96adf5a4857a)
+
 
 ## 使い方
 
