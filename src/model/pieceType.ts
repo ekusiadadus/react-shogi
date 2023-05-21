@@ -35,3 +35,8 @@ export const PieceDisplay = {
   [PieceType.Narikyo]: "成香",
   [PieceType.To]: "と"
 }
+
+export interface PieceState {
+  type: PieceType
+  direction: "up" | "down"
+}
