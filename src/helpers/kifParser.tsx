@@ -243,7 +243,7 @@ export const parseKIF = (KIF: string) => {
   const lines = KIF.split(/\r?\n/)
   let prevMove: { toX: number; toY: number } | null = null
 
-  lines.forEach((line, index) => {
+  lines.forEach(line => {
     line = num2num(line)
     line = kanji2num(line)
     line = zenkaku2hankaku(line)
