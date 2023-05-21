@@ -11,7 +11,8 @@
     "isolatedModules": true,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir": "./types",
+    "outDir": "dist",
+    "declarationDir": "dist/types",
     "jsx": "react-jsx",
 
     "strict": true,
@@ -19,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src/lib"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
