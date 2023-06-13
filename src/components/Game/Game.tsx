@@ -58,15 +58,24 @@ export const Game = ({ KIF }: { KIF: string }) => {
         <Board board={kifData[stepNumber]} />
       </div>
       <div className="game-info">
-        <button onClick={prevStep}>前へ戻る</button>
-        <button onClick={nextStep}>次へ進む</button>
-        {/* 現状のboardを表示するボタン */}
+        <button
+          onClick={() => {
+            setStepNumber(0)
+          }}
+        >{`<<`}</button>
+        <button onClick={prevStep}>{`<`}</button>
+        <button onClick={nextStep}>{`>`}</button>
+        <button
+          onClick={() => {
+            setStepNumber(kifData.length - 1)
+          }}
+        >{`>>`}</button>
         <button
           onClick={() => {
             alert(JSON.stringify(kifData[stepNumber]))
           }}
         >
-          現状のboardを表示する
+          ndjson
         </button>
         {/* 反転する */}
         <button
@@ -78,7 +87,7 @@ export const Game = ({ KIF }: { KIF: string }) => {
             )
           }}
         >
-          反転する
+          反転
         </button>
         {/* KIF形式の入力formとボタン */}
         <form
