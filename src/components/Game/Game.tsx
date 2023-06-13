@@ -58,37 +58,49 @@ export const Game = ({ KIF }: { KIF: string }) => {
         <Board board={kifData[stepNumber]} />
       </div>
       <div className="game-info">
-        <button
-          onClick={() => {
-            setStepNumber(0)
-          }}
-        >{`<<`}</button>
-        <button onClick={prevStep}>{`<`}</button>
-        <button onClick={nextStep}>{`>`}</button>
-        <button
-          onClick={() => {
-            setStepNumber(kifData.length - 1)
-          }}
-        >{`>>`}</button>
-        <button
-          onClick={() => {
-            alert(JSON.stringify(kifData[stepNumber]))
+        <div
+          className="game-info__step"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            paddingBottom: "16px"
           }}
         >
-          ndjson
-        </button>
-        {/* 反転する */}
-        <button
-          onClick={() => {
-            setReverseBoardStyleString(
-              reverseBoardStyleString === "rotate(180deg)"
-                ? ""
-                : "rotate(180deg)"
-            )
-          }}
-        >
-          反転
-        </button>
+          <button
+            onClick={() => {
+              setStepNumber(0)
+            }}
+          >{`<<`}</button>
+          <button onClick={prevStep}>{`<`}</button>
+          <button onClick={nextStep}>{`>`}</button>
+          <button
+            onClick={() => {
+              setStepNumber(kifData.length - 1)
+            }}
+          >{`>>`}</button>
+          <button
+            onClick={() => {
+              alert(JSON.stringify(kifData[stepNumber]))
+            }}
+          >
+            ndjson
+          </button>
+          {/* 反転する */}
+          <button
+            onClick={() => {
+              setReverseBoardStyleString(
+                reverseBoardStyleString === "rotate(180deg)"
+                  ? ""
+                  : "rotate(180deg)"
+              )
+            }}
+          >
+            反転
+          </button>
+        </div>
+
         {/* KIF形式の入力formとボタン */}
         <form
           onSubmit={e => {
