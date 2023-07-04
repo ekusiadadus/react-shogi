@@ -24,7 +24,7 @@ specifiers:
   react-dom: ^18.2.0
   stylelint: ^15.6.2
   stylelint-config-recommended: ^12.0.0
-  stylelint-config-standard: ^33.0.0
+  stylelint-config-standard: ^34.0.0
   typescript: ^5.0.4
   vite: ^4.3.2
 
@@ -42,7 +42,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   stylelint: 15.6.2
   stylelint-config-recommended: 12.0.0_stylelint@15.6.2
-  stylelint-config-standard: 33.0.0_stylelint@15.6.2
+  stylelint-config-standard: 34.0.0_stylelint@15.6.2
 
 devDependencies:
   '@types/react': 18.2.6
@@ -3394,13 +3394,23 @@ packages:
       stylelint: 15.6.2
     dev: false
 
-  /stylelint-config-standard/33.0.0_stylelint@15.6.2:
-    resolution: {integrity: sha512-eyxnLWoXImUn77+ODIuW9qXBDNM+ALN68L3wT1lN2oNspZ7D9NVGlNHb2QCUn4xDug6VZLsh0tF8NyoYzkgTzg==}
+  /stylelint-config-recommended/13.0.0_stylelint@15.6.2:
+    resolution: {integrity: sha512-EH+yRj6h3GAe/fRiyaoO2F9l9Tgg50AOFhaszyfov9v6ayXJ1IkSHwTxd7lB48FmOeSGDPLjatjO11fJpmarkQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
     peerDependencies:
-      stylelint: ^15.5.0
+      stylelint: ^15.10.0
     dependencies:
       stylelint: 15.6.2
-      stylelint-config-recommended: 12.0.0_stylelint@15.6.2
+    dev: false
+
+  /stylelint-config-standard/34.0.0_stylelint@15.6.2:
+    resolution: {integrity: sha512-u0VSZnVyW9VSryBG2LSO+OQTjN7zF9XJaAJRX/4EwkmU0R2jYwmBSN10acqZisDitS0CLiEiGjX7+Hrq8TAhfQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+    peerDependencies:
+      stylelint: ^15.10.0
+    dependencies:
+      stylelint: 15.6.2
+      stylelint-config-recommended: 13.0.0_stylelint@15.6.2
     dev: false
 
   /stylelint/15.6.2:
